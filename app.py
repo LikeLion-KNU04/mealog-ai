@@ -2,11 +2,13 @@ from flask import Flask
 from flask_restx import Api, Resource, reqparse
 from werkzeug.utils import secure_filename
 from werkzeug.datastructures import FileStorage
+from flask_cors import CORS
 import os
 from ai.analyze import Model
 
 app = Flask(__name__)
 api = Api(app)
+CORS(app)  # CORS 설정
 
 # 업로드된 파일을 저장할 디렉토리 설정
 UPLOAD_FOLDER = 'uploads'
