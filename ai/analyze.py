@@ -3,13 +3,15 @@ from .models import Darknet
 from .utils.datasets import LoadImages
 from .utils.utils import non_max_suppression, scale_coords, load_classes
 import pandas as pd
+import os
 class Model:
-    def __init__(self, cfg = './ai/cfg/yolov3-spp-403cls.cfg', weights = './ai/weights/best_403food_e200b150v2.pt', names = "./ai/data/403food.names",csv="./ai/data/food.csv", img_size=320, conf_thres = 0.3, iou_thres = 0.5, device = 'cuda'):
+    def __init__(self, cfg = 'cfg/yolov3-spp-403cls.cfg', weights = 'weights/best_403food_e200b150v2.pt', names = "data/403food.names",csv="data/food.csv", img_size=320, conf_thres = 0.3, iou_thres = 0.5, device = 'cuda'):
         # 기본 설정
-        self.cfg = cfg
-        self.weights = weights
-        self.names = names
-        self.csv = csv
+        base_path = os.path.dirname(__file__)
+        self.cfg = os.path.join(base_path, cfg)
+        self.weights = os.path.join(base_path, weights)
+        self.names = os.path.join(base_path, names)
+        self.csv = os.path.join(base_path, csv)
         self.img_size = img_size
         self.conf_thres = conf_thres
         self.iou_thres = iou_thres
