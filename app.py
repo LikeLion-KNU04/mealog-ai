@@ -3,7 +3,7 @@ from flask_restx import Api, Resource, reqparse
 from werkzeug.utils import secure_filename
 from werkzeug.datastructures import FileStorage
 import os
-from ai.analyze import analyze_image
+from ai.analyze import Model
 
 app = Flask(__name__)
 api = Api(app)
@@ -25,6 +25,9 @@ def allowed_file(filename):
 upload_parser = reqparse.RequestParser()
 upload_parser.add_argument('file', location='files', type=FileStorage, required=True)
 
+# AI 모델 불러오기
+model = Model()
+
 @api.route('/upload')
 class Upload(Resource):
     @api.expect(upload_parser)
@@ -38,12 +41,12 @@ class Upload(Resource):
             file.save(filepath)
 
             # AI 모델로 이미지 분석
-            analysis_result = analyze_image(filepath)
+            analysis_result = model.detect_single_image(filepath)
 
             # 결과를 JSON으로 반환
             return {"result": analysis_result}, 200
 
         return {"error": "Invalid file type"}, 400
-
+    
 if __name__ == '__main__':
     app.run(debug=True)
