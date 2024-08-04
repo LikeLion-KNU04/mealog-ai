@@ -14,7 +14,15 @@ class NutritionInfo:
         print("std data loaded")
 
     #에너지 필요 추정량(EER) 계산
-    def calc_EER(self, gender, age, height, weight, activity):
+    def calc_EER(self, user_info):
+        #유저 데이터 파싱
+        gender = user_info["gender"]
+        age = user_info["age"]
+        weight = user_info["weight"]
+        height = user_info["height"]
+        activity = user_info["activity"]
+
+        #상수 설정
         if gender == 0:
             if age < 19:
                 alpha = 88.5
@@ -41,6 +49,8 @@ class NutritionInfo:
                 gamma = 9.36
                 delta = 726
                 pa = (1.0,1.12,1.27,1.45)[activity]
+
+        #계산
         return alpha + beta*age + pa*(gamma*weight + delta*height/100)
     
     #성별, 나이에 따른 영양소 기준 정보 가져오기
@@ -116,7 +126,7 @@ class NutritionInfo:
     def calc_nutrition_score(self,standard, nutrient):
         total_score = 0
         detail_score = {}
-        for nut in ("carbonhydrate", "protein", "calcium", "phosphorus", "magnesium", "iron", "zinc"):
+        for nut in ("carbohydrate", "protein", "calcium", "phosphorus", "magnesium", "iron", "zinc"):
             diff = max(0, (standard[nut+"_RNI"] - nutrient[nut])/standard[nut+"_RNI"])
             score = 5*(1-(diff**2))
             detail_score["nut_"+nut+"_score"] = score
@@ -141,7 +151,7 @@ class NutritionInfo:
     
     #하루 식단 점수 계산
     def calc_daily_score(self, user_info, daily_nutrient):
-        EER = self.calc_EER(user_info["gender"], user_info["age"], user_info["height"], user_info["weight"], user_info["activity"])
+        EER = self.calc_EER(user_info)
         standard = self.get_nutrition_standard(user_info["gender"],user_info["age"])
         #기본 점수
         daily_score = 20
@@ -151,7 +161,7 @@ class NutritionInfo:
         daily_score += energy_score
         detail_score["energy_score"] = {"total":energy_score, "EER": EER, "kcal": daily_nutrient["kcal"]}
         #에너지 비율 점수(35점)
-        energy_ratio_score, energy_ratio_detail = self.energy_ratio_score(daily_nutrient["carbonhydrate"], daily_nutrient["fat"], daily_nutrient["protein"], daily_nutrient["transfat"])
+        energy_ratio_score, energy_ratio_detail = self.energy_ratio_score(daily_nutrient["carbohydrate"], daily_nutrient["fat"], daily_nutrient["protein"], daily_nutrient["transfat"])
         daily_score += energy_ratio_score
         detail_score["ratio_score"] = {"energy_ratio_score": energy_ratio_score, "detail": energy_ratio_detail}
         #영양소 섭취 점수(35점)
@@ -171,10 +181,10 @@ if __name__ == '__main__':
     user_info = {"gender":1, "age":30, "height":180, "weight":70, "activity":2}
     # print(nut.culc_energy_ratio(77.13, 8.84, 17.12, 0))
     # print(nut.energy_ratio_score(101.62, 23.15, 19.75, 0))
-    # print(nut.calc_nutrition_score(nut.get_nutrition_standard(0, 30), {"carbonhydrate": 77.13, "protein": 8.84, "calcium": 1000, "phosphorus": 700, "magnesium": 350, "iron": 0, "zinc": 11}))
+    # print(nut.calc_nutrition_score(nut.get_nutrition_standard(0, 30), {"carbohydrate": 77.13, "protein": 8.84, "calcium": 1000, "phosphorus": 700, "magnesium": 350, "iron": 0, "zinc": 11}))
     #print(nut.calc_penalty(nut.get_nutrition_standard(0, 30), {"phosphorus": 100000, "natrium": 2000, "iron": 20, "zinc": 10, "cholesterol": 300}))
     print()
-    print(nut.calc_daily_score(user_info, {"carbonhydrate": 77.13, "protein": 8.84, "fat": 17.12, "transfat": 0, "kcal": 2500, "calcium": 1000, "phosphorus": 700, "magnesium": 350, "iron": 0, "zinc": 11, "natrium": 2000, "cholesterol": 300}))
+    print(nut.calc_daily_score(user_info, {"carbohydrate": 77.13, "protein": 8.84, "fat": 17.12, "transfat": 0, "kcal": 2500, "calcium": 1000, "phosphorus": 700, "magnesium": 350, "iron": 0, "zinc": 11, "natrium": 2000, "cholesterol": 300}))
 
 
 
