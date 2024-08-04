@@ -26,7 +26,7 @@ class Model:
         print("model loaded")
 
         # 영양정보 로드
-        self.nut = pd.read_csv(self.csv)
+        self.nut = pd.read_csv(self.csv,dtype={'food_name':'str'},na_values='-')
         print("food data loaded")
 
         # 클래스 이름 로드
@@ -66,9 +66,18 @@ class Model:
                     # 결과 출력
                     for *xyxy, conf, cls in det:
                         if cls != 0:
+                            bnd = {"min_x": int(xyxy[0]),
+                                         "min_y": int(xyxy[1]),
+                                         "max_x": int(xyxy[2]),
+                                         "max_y": int(xyxy[3])}
+                            food_info = {"cls":int(cls),
+                                         "class": self.class_names[int(cls)-1], 
+                                         "confidence": float(conf),
+                                         "bnd": bnd,
+                                         "nut": self.nut.iloc[int(cls)-1,1:].to_dict()}
                             count += 1
-                            res.append({"cls":int(cls),"class": self.class_names[int(cls)-1], "confidence": float(conf), "min_x": int(xyxy[0]), "min_y": int(xyxy[1]), "max_x": int(xyxy[2]), "max_y": int(xyxy[3])})
-        print(f"{count} objects detected")
+                            res.append(food_info)
+
         return {"path":path, "result":res}
 
 if __name__ == '__main__':
