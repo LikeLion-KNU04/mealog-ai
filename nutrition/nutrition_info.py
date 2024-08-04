@@ -117,7 +117,7 @@ class NutritionInfo:
         if transfat_ratio > 1:
             transfat_score = 0
         else:
-            transfat_score = 10
+            transfat_score = 5
 
         total_score = carb_score + protein_score + fat_score + transfat_score
         return total_score, {"ratio_carb_score": carb_score, "ratio_protein_score": protein_score, "ratio_fat_score": fat_score, "ratio_transfat_score": transfat_score}        
