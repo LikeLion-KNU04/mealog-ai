@@ -78,6 +78,17 @@ class Model:
                             count += 1
                             res.append(food_info)
 
+        #이미지 삭제
+        upload_folder = os.path.abspath('upload')
+        file_path = os.path.abspath(path)
+
+        if os.path.commonpath([upload_folder, file_path]) == upload_folder:
+            if os.path.exists(file_path):
+                try:
+                    os.remove(file_path)
+                except Exception as e:
+                    print(f"Error removing file {file_path}: {e}")
+
         return {"path":path, "result":res}
 
 if __name__ == '__main__':
