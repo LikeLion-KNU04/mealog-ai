@@ -34,8 +34,6 @@ class Model:
         self.class_names = self.nut.iloc[:,0].tolist()
         print("class names loaded")
 
-
-
     def detect_single_image(self,image_path):
         
         # 이미지 로드
