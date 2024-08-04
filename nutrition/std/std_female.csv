@@ -1,4 +1,4 @@
-age,kcal,carbonhydrate_RNI,protein_RNI,calcium_RNI,phosphorus_RNI,phosphorus_UL,natrium_AI,natrium_UL,kalium_AI,magnesium_RNI,iron_RNI,iron_UL,zinc_RNI,zinc_UL,cholesterol_UL
+age,kcal,carbohydrate_RNI,protein_RNI,calcium_RNI,phosphorus_RNI,phosphorus_UL,natrium_AI,natrium_UL,kalium_AI,magnesium_RNI,iron_RNI,iron_UL,zinc_RNI,zinc_UL,cholesterol_UL
 1~2,900,130,20,500,450,3000,810,1200,1900,70,6,40,3,6,-
 3~5,1400,130,25,600,550,3000,1000,1600,2400,110,7,40,4,9,-
 6~8,1500,130,35,700,550,3000,1200,1900,2900,150,9,40,5,13,-
