@@ -27,6 +27,7 @@ class Model:
 
         # 영양정보 로드
         self.nut = pd.read_csv(self.csv,dtype={'food_name':'str'},na_values='-',encoding='cp949')
+        self.nut = self.nut.fillna(0)
         print("food data loaded")
 
         # 클래스 이름 로드
